@@ -34,3 +34,8 @@ data:
   vault_addr: "http://vault-application.vault:8200"
   interval: "5"
 ```
+
+## Deploy
+```
+kubectl apply -f .
+```

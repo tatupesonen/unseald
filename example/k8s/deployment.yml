@@ -4,6 +4,7 @@ metadata:
   labels:
     app: unseald
   name: unseald
+  namespace: unseald
 spec:
   replicas: 1
   selector:
@@ -11,6 +12,7 @@ spec:
       app: unseald
   template:
     metadata:
+      namespace: unseald
       labels:
         app: unseald
     spec:
