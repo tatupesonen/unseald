@@ -21,23 +21,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let unseal_url = format!("{}/v1/sys/unseal", addr);
             let health_url = format!("{}/v1/sys/health", addr);
             for (mut idx, key) in keys.split(",").into_iter().enumerate() {
-								idx += 1;
+                idx += 1;
                 let mut req = HashMap::new();
                 req.insert("key", key);
                 let res = client.get(&health_url).send();
                 match res {
                     Ok(data) => {
                         if data.status() != StatusCode::OK {
-                            println!("Vault at {} is sealed, trying to unseal with key portion {}...", addr, idx);
+                            println!(
+                                "Vault at {} is sealed, trying to unseal with key portion {}...",
+                                addr, idx
+                            );
                             let res = client.post(&unseal_url).json(&req).send();
                             match res {
                                 Ok(data) => {
-																	if data.status() == StatusCode::OK {
-																		println!("Vault at {} provided with key portion {}.", addr, idx)
-																	} else {
-																		println!("Unable to unseal Vault: {}", data.status());
-																	}
-																},
+                                    if data.status() == StatusCode::OK {
+                                        println!(
+                                            "Vault at {} provided with key portion {}.",
+                                            addr, idx
+                                        )
+                                    } else {
+                                        println!("Unable to unseal Vault: {}", data.status());
+                                    }
+                                }
                                 Err(err) => println!("Unable to unseal Vault: {}", err),
                             }
                         }
