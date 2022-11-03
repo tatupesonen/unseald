@@ -3,13 +3,8 @@ name: Docker
 on:
   workflow_dispatch:
   push:
-    paths:
-      - src/**
-      - Cargo.lock
-      - Cargo.toml
-      - Dockerfile
-    branches:
-      - master
+    tags:
+      - '*'
 
 env:
   REGISTRY: ghcr.io
@@ -45,7 +40,7 @@ jobs:
           images: |
             nnari/unseald
           tags: |
-            type=sha
+            type=ref,event=tag
             type=raw,value=latest
 
       - name: Build and push Docker image

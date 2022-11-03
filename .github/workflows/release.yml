@@ -6,44 +6,36 @@ on:
       - '*'
 
 jobs:
-  publish:
-    name: Publish for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        name: [
-            linux,
-            windows,
-            macos
-        ]
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
 
-        include:
-          - name: linux
-            os: ubuntu-latest
-            artifact_name: target/release/unseald
-            asset_name: unseald-linux
-          - name: windows
-            os: windows-latest
-            artifact_name: target/release/unseald.exe
-            asset_name: unseald-windows
-          - name: macos
-            os: macos-latest
-            artifact_name: target/release/unseald
-            asset_name: unseald-macos
-
+  build_linux_release:
+    name: Build release for ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
 
-    - name: Build
-      run: cargo build --release --locked
-
-    - name: Upload binaries to release
-      uses: actions/upload-artifact@v2
+    - name: Run Linux Build
+      run: |
+        cargo build --release --locked
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: ${{ matrix.asset_name }}
-        path: ${{ matrix.artifact_name }}
+        tag_name: ${{ needs.create_release.outputs.tag-name }}
+        files: target/release/unseald
+      
