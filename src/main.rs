@@ -26,10 +26,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(_) => {
                 println!("Vault is sealed, trying to unseal...");
                 let res = client.post(&unseal_url).json(&req).send();
-								match res {
-									Ok(_) => println!("Vault unsealed."),
-									Err(err) => println!("Unable to unseal Vault: {}", err)
-								}
+                match res {
+                    Ok(_) => println!("Vault unsealed."),
+                    Err(err) => println!("Unable to unseal Vault: {}", err),
+                }
             }
             Err(e) => {
                 println!("Unable to query Vault health: {}", e);
