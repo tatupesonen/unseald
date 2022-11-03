@@ -3,6 +3,11 @@ name: Docker
 on:
   workflow_dispatch:
   push:
+    paths:
+      - src/**
+      - Cargo.lock
+      - Cargo.toml
+      - Dockerfile
     branches:
       - master
 
