@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unseald-configmap
+data:
+  vault_addr: "http://vault-application.vault:8200"
+  interval: "5"

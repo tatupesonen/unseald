@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  unseald:
+    image: nnari/unseald:latest
+    environment:
+      - KEY=1234
+      - INTERVAL=5
+      - VAULT_ADDR=http://vault:8200
+  
+  # ... Vault Services etc.

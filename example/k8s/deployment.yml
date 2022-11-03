@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: unseald
+  name: unseald
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unseald
+  template:
+    metadata:
+      labels:
+        app: unseald
+    spec:
+      containers:
+        - image: nnari/unseald:latest
+          name: unseald
+          env:
+            - name: INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: unseald-configmap
+                  key: interval
+                  optional: true
+            - name: VAULT_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: unseald-configmap
+                  key: vault_addr
+            - name: KEY
+              valueFrom:
+                secretKeyRef:
+                  name: unseald-secrets
+                  key: key
+          ports:
+            - containerPort: 3306
+          resources: {}
+      restartPolicy: Always
+status: {}
