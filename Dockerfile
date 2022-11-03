@@ -20,5 +20,5 @@ FROM alpine:3.14 as runtime
 RUN apk update --quiet \
     	&& apk add -q --no-cache libgcc curl
 
-COPY --from=builder /unseald/target/release/vault-unseal-daemon /bin/vault-unseal-daemon
-CMD ["/bin/vault-unseal-daemon"]
+COPY --from=builder /unseald/target/release/unseald /bin/unseald
+CMD ["/bin/unseald"]
